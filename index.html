@@ -358,6 +358,50 @@
       border-radius: 999px;
     }
 
+    .kat-section {
+      margin-bottom: 3rem;
+    }
+
+    .kat-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.25rem;
+    }
+
+    .kat-header .section-title {
+      margin-bottom: 0;
+    }
+
+    .kat-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    .kat-link:hover {
+      text-decoration: underline;
+    }
+
+    .kat-desc {
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .empty-state {
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: 14px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
     footer {
       flex-shrink: 0;
       text-align: center;
@@ -503,8 +547,7 @@
       </p>
     </section>
 
-    <h2 class="section-title">Projektübersicht</h2>
-    <div class="home-cards" id="home-cards"></div>
+    <div id="kategorie-bereiche"></div>
   </main>
 
   <footer>
@@ -512,6 +555,33 @@
   </footer>
 
   <script>
+    const categories = [
+      {
+        key: "website-app",
+        title: "Website & App",
+        description: "Websites und Apps, die ich entwickelt habe – von Dashboard-Webanwendungen bis hin zu mobilen Android-Apps.",
+        ids: ["projekt-1", "projekt-2", "projekt-3"]
+      },
+      {
+        key: "flyer",
+        title: "Flyer",
+        description: "Flyer und Plakate, die ich gestaltet habe – für Programme, Konzerte und mehr.",
+        ids: ["flyer-1", "flyer-2"]
+      },
+      {
+        key: "grafiken",
+        title: "Grafiken & Designs",
+        description: "Grafische Gestaltungen, Illustrationen und Design-Arbeiten. Inhalte folgen in Kürze.",
+        ids: []
+      },
+      {
+        key: "kampagnen",
+        title: "Kampagnen",
+        description: "Kampagnen, Marketing-Maßnahmen und Kommunikation. Inhalte folgen in Kürze.",
+        ids: []
+      }
+    ];
+
     const projects = [
       {
         id: "projekt-1",
@@ -536,32 +606,91 @@
         description: "Selbstständig entwickelte Website des Orchesters mit Konzertkalender, Galerie und Kontakt – responsiv und live unter radebeulersinfoniker.de.",
         image: "img/projekt-3/logo.png",
         date: "02/2026"
+      },
+      {
+        id: "flyer-1",
+        name: "Programmheft Juni 2026",
+        category: "Programmheft",
+        description: "Das Programmheft der Radebeuler Sinfoniker für den Auftritt im Juni 2026 – inhaltlich und gestalterisch von mir erstellt.",
+        thumbText: "PDF verfügbar",
+        date: "06/2026"
+      },
+      {
+        id: "flyer-2",
+        name: "Poster Konzert Juni 2026",
+        category: "Poster",
+        description: "Das Konzertposter der Radebeuler Sinfoniker für den Auftritt im Juni 2026. Inhalt und Gestaltung von mir erstellt.",
+        image: "flyer/Poster_Konzert_Jun2026.png",
+        date: "06/2026"
       }
     ];
 
-    const container = document.getElementById("home-cards");
+    const container = document.getElementById("kategorie-bereiche");
 
-    projects.forEach((project) => {
-      const card = document.createElement("a");
-      card.className = "home-card";
-      card.href = "projekte.html?projekt=" + project.id;
+    categories.forEach((cat) => {
+      const section = document.createElement("section");
+      section.className = "kat-section";
 
-      const thumb = project.image
-        ? '<img src="' + project.image + '" alt="' + project.name + '" loading="lazy">'
-        : "Noch keine Vorschau";
-      const thumbClass = project.image ? "thumb" : "thumb placeholder-thumb";
+      const header = document.createElement("div");
+      header.className = "kat-header";
 
-      card.innerHTML =
-        '<div class="' + thumbClass + '">' + thumb + "</div>" +
-        '<div class="body">' +
-          '<span class="category">' + project.category + "</span>" +
-          "<h3>" + project.name + "</h3>" +
-          "<p>" + project.description + "</p>" +
-          (project.date ? '<span class="date-pill">' + project.date + "</span>" : "") +
-          '<span class="more">Zum Projekt &rarr;</span>' +
-        "</div>";
+      const title = document.createElement("h2");
+      title.className = "section-title";
+      title.textContent = cat.title;
 
-      container.appendChild(card);
+      const link = document.createElement("a");
+      link.className = "kat-link";
+      link.href = "kategorie.html?kategorie=" + cat.key;
+      link.innerHTML = "Alle ansehen &rarr;";
+
+      header.appendChild(title);
+      header.appendChild(link);
+
+      const desc = document.createElement("p");
+      desc.className = "kat-desc";
+      desc.textContent = cat.description;
+
+      section.appendChild(header);
+      section.appendChild(desc);
+
+      const items = projects.filter((p) => cat.ids.indexOf(p.id) !== -1);
+
+      if (items.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty-state";
+        empty.textContent = "Noch keine Inhalte verfügbar – folgt bald.";
+        section.appendChild(empty);
+      } else {
+        const grid = document.createElement("div");
+        grid.className = "home-cards";
+
+        items.forEach((project) => {
+          const card = document.createElement("a");
+          card.className = "home-card";
+          card.href = "projekte.html?projekt=" + project.id;
+
+          const thumb = project.image
+            ? '<img src="' + project.image + '" alt="' + project.name + '" loading="lazy">'
+            : (project.thumbText || "Noch keine Vorschau");
+          const thumbClass = project.image ? "thumb" : "thumb placeholder-thumb";
+
+          card.innerHTML =
+            '<div class="' + thumbClass + '">' + thumb + "</div>" +
+            '<div class="body">' +
+              '<span class="category">' + project.category + "</span>" +
+              "<h3>" + project.name + "</h3>" +
+              "<p>" + project.description + "</p>" +
+              (project.date ? '<span class="date-pill">' + project.date + "</span>" : "") +
+              '<span class="more">Zum Projekt &rarr;</span>' +
+            "</div>";
+
+          grid.appendChild(card);
+        });
+
+        section.appendChild(grid);
+      }
+
+      container.appendChild(section);
     });
 
     document.getElementById("year").textContent = new Date().getFullYear();
