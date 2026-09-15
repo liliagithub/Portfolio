@@ -105,7 +105,7 @@
       top: calc((var(--header-h) - 38px) / 2);
       right: calc(var(--sidebar-w) + 4px);
       z-index: 60;
-      display: none;
+      display: flex;
       align-items: center;
       justify-content: center;
       width: 38px;
@@ -718,10 +718,10 @@
       <nav aria-label="Navigation">
         <ul>
           <li><a href="index.html">Startseite</a></li>
-          <li><a href="projekte.html">Website &amp; App</a></li>
-          <li><a href="projekte.html">Flyer</a></li>
-          <li><a href="projekte.html">Grafiken &amp; Designs</a></li>
-          <li><a href="projekte.html">Kampagnen</a></li>
+          <li><a href="kategorie.html?kategorie=website-app">Website &amp; App</a></li>
+          <li><a href="kategorie.html?kategorie=flyer">Flyer</a></li>
+          <li><a href="kategorie.html?kategorie=grafiken">Grafiken &amp; Designs</a></li>
+          <li><a href="kategorie.html?kategorie=kampagnen">Kampagnen</a></li>
           <li><a href="techstack.html">Tech Stack</a></li>
         </ul>
       </nav>
@@ -1266,6 +1266,19 @@ id: "projekt-1",
       switchProject(projects[0].id);
     }
 
+    const activeId = target || projects[0].id;
+    const activeLink = document.querySelector('.sidebar-links a[data-target="' + activeId + '"]');
+    if (activeLink) {
+      const list = activeLink.closest("ul");
+      if (list && list.id) {
+        const btn = document.querySelector('.sidebar-heading[data-target="' + list.id + '"]');
+        if (btn && !btn.classList.contains("open")) {
+          btn.classList.add("open");
+          list.classList.add("open");
+        }
+      }
+    }
+
     /* Sidebar-Aufklappen */
     document.querySelectorAll(".sidebar-heading[data-target]").forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -1323,12 +1336,10 @@ id: "projekt-1",
     });
 
     window.addEventListener("resize", () => {
-      if (!isMobile()) {
-        setSidebar(true);
-      }
+      if (isMobile()) setSidebar(false);
     });
 
-    setSidebar(!isMobile());
+    setSidebar(false);
 
     document.querySelector(".footer-year").textContent = new Date().getFullYear();
 

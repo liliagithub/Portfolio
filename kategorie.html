@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Portfolio – Eine Sammlung meiner bisherigen Projekte.">
-  <title>Portfolio | Startseite</title>
+  <meta name="description" content="Portfolio – Übersicht der Kategorien.">
+  <title>Portfolio | Kategorie</title>
   <style>
     :root {
       --bg: #f7f5f2;
@@ -171,6 +171,10 @@
       transform: rotate(90deg);
     }
 
+    .sidebar-sideheading.current {
+      color: var(--accent);
+    }
+
     .sidebar-placeholder a {
       opacity: 0.45;
       pointer-events: none;
@@ -245,6 +249,16 @@
       border-radius: 14px;
       margin-bottom: 2.5rem;
       text-align: center;
+    }
+
+    .hero .category {
+      display: inline-block;
+      margin-bottom: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
     }
 
     .hero h2 {
@@ -358,6 +372,16 @@
       border-radius: 999px;
     }
 
+    .empty-state {
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: 14px;
+      padding: 3rem 2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
     footer {
       flex-shrink: 0;
       text-align: center;
@@ -440,11 +464,11 @@
       </div>
       <nav aria-label="Navigation">
         <ul>
-          <li><a href="index.html" class="active">Startseite</a></li>
-          <li><a href="kategorie.html?kategorie=website-app">Website &amp; App</a></li>
-          <li><a href="kategorie.html?kategorie=flyer">Flyer</a></li>
-          <li><a href="kategorie.html?kategorie=grafiken">Grafiken &amp; Designs</a></li>
-          <li><a href="kategorie.html?kategorie=kampagnen">Kampagnen</a></li>
+          <li><a href="index.html">Startseite</a></li>
+          <li><a href="kategorie.html?kategorie=website-app" data-nav="website-app">Website &amp; App</a></li>
+          <li><a href="kategorie.html?kategorie=flyer" data-nav="flyer">Flyer</a></li>
+          <li><a href="kategorie.html?kategorie=grafiken" data-nav="grafiken">Grafiken &amp; Designs</a></li>
+          <li><a href="kategorie.html?kategorie=kampagnen" data-nav="kampagnen">Kampagnen</a></li>
           <li><a href="techstack.html">Tech Stack</a></li>
         </ul>
       </nav>
@@ -454,21 +478,21 @@
 
   <div class="sidebar-overlay" id="sidebar-overlay"></div>
   <aside class="sidebar" id="sidebar">
-    <a href="index.html" class="sidebar-link-head current">Startseite</a>
+    <a href="index.html" class="sidebar-link-head">Startseite</a>
     <a href="techstack.html" class="sidebar-link-head">Tech Stack</a>
     <div class="sidebar-divider"></div>
     <div class="sidebar-section">
-      <button class="sidebar-sideheading open" data-target="nav-projekte">
+      <button class="sidebar-sideheading" data-target="nav-projekte" data-kategorie="website-app">
         Website &amp; App <span class="arrow">&#9654;</span>
       </button>
-      <ul class="sidebar-links open" id="nav-projekte">
+      <ul class="sidebar-links" id="nav-projekte">
         <li><a href="projekte.html?projekt=projekt-1">Dashboard Wirtschaftsdaten</a></li>
         <li><a href="projekte.html?projekt=projekt-2">Fridge Fun</a></li>
         <li><a href="projekte.html?projekt=projekt-3">Radebeuler Sinfoniker</a></li>
       </ul>
     </div>
     <div class="sidebar-section">
-      <button class="sidebar-sideheading" data-target="nav-flyer">
+      <button class="sidebar-sideheading" data-target="nav-flyer" data-kategorie="flyer">
         Flyer <span class="arrow">&#9654;</span>
       </button>
       <ul class="sidebar-links" id="nav-flyer">
@@ -477,7 +501,7 @@
       </ul>
     </div>
     <div class="sidebar-section">
-      <button class="sidebar-sideheading" data-target="nav-designs">
+      <button class="sidebar-sideheading" data-target="nav-designs" data-kategorie="grafiken">
         Grafiken &amp; Designs <span class="arrow">&#9654;</span>
       </button>
       <ul class="sidebar-links sidebar-placeholder" id="nav-designs">
@@ -485,7 +509,7 @@
       </ul>
     </div>
     <div class="sidebar-section">
-      <button class="sidebar-sideheading" data-target="nav-kampagnen">
+      <button class="sidebar-sideheading" data-target="nav-kampagnen" data-kategorie="kampagnen">
         Kampagnen <span class="arrow">&#9654;</span>
       </button>
       <ul class="sidebar-links sidebar-placeholder" id="nav-kampagnen">
@@ -496,15 +520,13 @@
 
   <main>
     <section class="hero">
-      <h2>Meine Projekte</h2>
-      <p>
-        Eine Sammlung meiner bisherigen Arbeiten. Klicke auf eine Karte,
-        um das jeweilige Projekt zu entdecken.
-      </p>
+      <span class="category" id="intro-category"></span>
+      <h2 id="intro-title"></h2>
+      <p id="intro-text"></p>
     </section>
 
-    <h2 class="section-title">Projektübersicht</h2>
-    <div class="home-cards" id="home-cards"></div>
+    <h2 class="section-title">Übersicht</h2>
+    <div class="home-cards" id="kat-cards"></div>
   </main>
 
   <footer>
@@ -512,6 +534,33 @@
   </footer>
 
   <script>
+    const categories = {
+      "website-app": {
+        title: "Website & App",
+        description: "Websites und Apps, die ich entwickelt habe – von Dashboard-Webanwendungen bis hin zu mobilen Android-Apps.",
+        ids: ["projekt-1", "projekt-2", "projekt-3"],
+        empty: false
+      },
+      flyer: {
+        title: "Flyer",
+        description: "Flyer und Plakate, die ich gestaltet habe – für Programme, Konzerte und mehr.",
+        ids: ["flyer-1", "flyer-2"],
+        empty: false
+      },
+      grafiken: {
+        title: "Grafiken & Designs",
+        description: "Grafische Gestaltungen, Illustrationen und Design-Arbeiten. Inhalte folgen in Kürze.",
+        ids: [],
+        empty: true
+      },
+      kampagnen: {
+        title: "Kampagnen",
+        description: "Kampagnen, Marketing-Maßnahmen und Kommunikation. Inhalte folgen in Kürze.",
+        ids: [],
+        empty: true
+      }
+    };
+
     const projects = [
       {
         id: "projekt-1",
@@ -536,33 +585,79 @@
         description: "Selbstständig entwickelte Website des Orchesters mit Konzertkalender, Galerie und Kontakt – responsiv und live unter radebeulersinfoniker.de.",
         image: "img/projekt-3/logo.png",
         date: "02/2026"
+      },
+      {
+        id: "flyer-1",
+        name: "Programmheft Juni 2026",
+        category: "Programmheft",
+        description: "Das Programmheft der Radebeuler Sinfoniker für den Auftritt im Juni 2026 – inhaltlich und gestalterisch von mir erstellt.",
+        thumbText: "PDF verfügbar",
+        date: "06/2026"
+      },
+      {
+        id: "flyer-2",
+        name: "Poster Konzert Juni 2026",
+        category: "Poster",
+        description: "Das Konzertposter der Radebeuler Sinfoniker für den Auftritt im Juni 2026. Inhalt und Gestaltung von mir erstellt.",
+        image: "flyer/Poster_Konzert_Jun2026.png",
+        date: "06/2026"
       }
     ];
 
-    const container = document.getElementById("home-cards");
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get("kategorie");
+    const cat = categories[slug] || categories["website-app"];
 
-    projects.forEach((project) => {
-      const card = document.createElement("a");
-      card.className = "home-card";
-      card.href = "projekte.html?projekt=" + project.id;
+    document.title = "Portfolio | " + cat.title;
+    document.getElementById("intro-category").textContent = cat.title;
+    document.getElementById("intro-title").textContent = "Übersicht: " + cat.title;
+    document.getElementById("intro-text").textContent = cat.description;
 
-      const thumb = project.image
-        ? '<img src="' + project.image + '" alt="' + project.name + '" loading="lazy">'
-        : "Noch keine Vorschau";
-      const thumbClass = project.image ? "thumb" : "thumb placeholder-thumb";
-
-      card.innerHTML =
-        '<div class="' + thumbClass + '">' + thumb + "</div>" +
-        '<div class="body">' +
-          '<span class="category">' + project.category + "</span>" +
-          "<h3>" + project.name + "</h3>" +
-          "<p>" + project.description + "</p>" +
-          (project.date ? '<span class="date-pill">' + project.date + "</span>" : "") +
-          '<span class="more">Zum Projekt &rarr;</span>' +
-        "</div>";
-
-      container.appendChild(card);
+    document.querySelectorAll("nav a[data-nav]").forEach((a) => {
+      a.classList.toggle("active", a.dataset.nav === slug);
     });
+
+    document.querySelectorAll(".sidebar-sideheading[data-kategorie]").forEach((btn) => {
+      const isCurrent = btn.dataset.kategorie === slug;
+      btn.classList.toggle("current", isCurrent);
+      if (isCurrent) {
+        btn.classList.add("open");
+        const list = document.getElementById(btn.dataset.target);
+        if (list) list.classList.add("open");
+      }
+    });
+
+    const container = document.getElementById("kat-cards");
+
+    if (cat.empty || cat.ids.length === 0) {
+      container.innerHTML =
+        '<div class="empty-state">Noch keine Inhalte verfügbar.<br>Diese Kategorie wird in Kürze gefüllt.</div>';
+    } else {
+      cat.ids.forEach((id) => {
+        const project = projects.find((p) => p.id === id);
+        if (!project) return;
+        const card = document.createElement("a");
+        card.className = "home-card";
+        card.href = "projekte.html?projekt=" + project.id;
+
+        const thumb = project.image
+          ? '<img src="' + project.image + '" alt="' + project.name + '" loading="lazy">'
+          : (project.thumbText || "Noch keine Vorschau");
+        const thumbClass = project.image ? "thumb" : "thumb placeholder-thumb";
+
+        card.innerHTML =
+          '<div class="' + thumbClass + '">' + thumb + "</div>" +
+          '<div class="body">' +
+            '<span class="category">' + project.category + "</span>" +
+            "<h3>" + project.name + "</h3>" +
+            "<p>" + project.description + "</p>" +
+            (project.date ? '<span class="date-pill">' + project.date + "</span>" : "") +
+            '<span class="more">Zum Projekt &rarr;</span>' +
+          "</div>";
+
+        container.appendChild(card);
+      });
+    }
 
     document.getElementById("year").textContent = new Date().getFullYear();
 
@@ -599,7 +694,7 @@
 
     sidebarOverlay.addEventListener("click", () => setSidebar(false));
 
-    sidebar.querySelectorAll(".sidebar-sideheading").forEach((btn) => {
+    sidebar.querySelectorAll(".sidebar-sideheading[data-kategorie]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const target = document.getElementById(btn.dataset.target);
         if (!target) return;
