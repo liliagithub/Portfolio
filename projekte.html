@@ -105,7 +105,7 @@
       top: calc((var(--header-h) - 38px) / 2);
       right: calc(var(--sidebar-w) + 4px);
       z-index: 60;
-      display: flex;
+      display: none;
       align-items: center;
       justify-content: center;
       width: 38px;
@@ -637,7 +637,12 @@
     /* ── Mobile Sidebar ── */
     @media (max-width: 768px) {
       .hamburger {
-        display: block;
+        display: flex;
+        right: 14px;
+      }
+
+      .sb-collapsed .hamburger {
+        right: 14px;
       }
 
       .header-inner {
@@ -652,16 +657,7 @@
       }
 
       nav {
-        width: 100%;
-      }
-
-      nav ul {
-        gap: 0.3rem;
-      }
-
-      nav a {
-        font-size: 0.85rem;
-        padding: 0.35rem 0.65rem;
+        display: none;
       }
 
       .sidebar {
