@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio – Detaillierte Ansicht aller Projekte.">
+  <title>Portfolio | Projekte</title>
+  <style>
+    :root {
+      --bg: #f7f5f2;
+      --surface: #ffffff;
+      --text: #3d3a36;
+      --muted: #8a857e;
+      --accent: #6b7f6f;
+      --accent-light: #e9efe9;
+      --border: #e4e0d9;
+      --shadow: 0 2px 10px rgba(61, 58, 54, 0.06);
+      --sidebar-w: 250px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      padding-top: 4.5rem;
+    }
+
+    /* ── Header ── */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0.8rem 1rem;
+      padding-right: calc(1rem + var(--sidebar-w));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .logo a {
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .logo h1 {
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      display: block;
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.95rem;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    nav a:hover {
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+
+    nav a.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .hamburger {
+      position: fixed;
+      top: 12px;
+      right: calc(var(--sidebar-w) + 4px);
+      z-index: 60;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--text);
+      font-size: 1.15rem;
+      line-height: 1;
+      transition: right 0.25s ease;
+    }
+
+    .sb-collapsed .hamburger {
+      right: 14px;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      position: fixed;
+      top: 64px;
+      right: 0;
+      bottom: 0;
+      width: var(--sidebar-w);
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 1.25rem 0;
+      z-index: 15;
+      transform: translateX(100%);
+      transition: transform 0.25s ease;
+    }
+
+    .sidebar.open {
+      transform: translateX(0);
+    }
+
+    .sidebar-section {
+      margin-bottom: 0.6rem;
+    }
+
+    .sidebar-heading {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      width: 100%;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem 1.25rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      text-align: left;
+    }
+
+    .sidebar-heading .icon {
+      font-size: 1rem;
+    }
+
+    .sidebar-heading .arrow {
+      margin-left: auto;
+      font-size: 0.7rem;
+      transition: transform 0.2s;
+    }
+
+    .sidebar-heading.open .arrow {
+      transform: rotate(90deg);
+    }
+
+    .sidebar-links {
+      list-style: none;
+      display: none;
+    }
+
+    .sidebar-links.open {
+      display: block;
+    }
+
+    .sidebar-links a {
+      display: block;
+      padding: 0.4rem 1.25rem 0.4rem 2.5rem;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.9rem;
+      border-left: 2px solid transparent;
+      transition: all 0.15s;
+    }
+
+    .sidebar-links a:hover {
+      color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    .sidebar-links a.active {
+      color: var(--accent);
+      border-left-color: var(--accent);
+      background: var(--accent-light);
+      font-weight: 600;
+    }
+
+    .sidebar-placeholder a {
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    .sidebar-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0.6rem 1.25rem;
+    }
+
+    .sidebar-footer {
+      padding: 1rem 1.25rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .sidebar-footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .sidebar-footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* ── Layout ── */
+    .page-wrapper {
+      display: flex;
+      flex: 1 0 auto;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    main {
+      flex: 1 0 auto;
+      width: 100%;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    section.project {
+      display: none;
+      margin-bottom: 2.5rem;
+    }
+
+    section.project.active {
+      display: block;
+    }
+
+    .intro {
+      margin-bottom: 2rem;
+    }
+
+    .intro .category {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .intro h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .intro p {
+      color: var(--muted);
+      max-width: 70ch;
+    }
+
+    .tagline {
+      padding: 1.5rem;
+      background: var(--accent-light);
+      border-radius: 12px;
+      margin-bottom: 2rem;
+    }
+
+    .tagline p {
+      color: var(--text);
+      font-size: 1.05rem;
+    }
+
+    .project-date {
+      display: inline-block;
+      margin-bottom: 0.75rem;
+      font-size: 0.85rem;
+      color: var(--accent);
+      padding: 0.25rem 0.8rem;
+      background: var(--accent-light);
+      border-radius: 999px;
+    }
+
+    .demo-link {
+      display: inline-block;
+      margin: 0 0 2rem;
+      padding: 0.6rem 1.4rem;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .demo-link:hover {
+      background: #58705c;
+      transform: translateY(-2px);
+    }
+
+    .project-note {
+      margin: 0 0 1.5rem;
+      padding: 1rem 1.25rem;
+      background: rgba(138, 133, 126, 0.12);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 10px 10px 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(61, 58, 54, 0.1);
+    }
+
+    .card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .card .year {
+      display: inline-block;
+      margin-top: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--accent);
+      padding: 0.15rem 0.6rem;
+      background: var(--accent-light);
+      border-radius: 999px;
+    }
+
+    .placeholder {
+      text-align: center;
+      padding: 2rem;
+      color: var(--muted);
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+    }
+
+    /* Technische Inhalte */
+    .details {
+      margin-top: 2.5rem;
+    }
+
+    .details h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 2rem 0 0.6rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .details h2:first-child {
+      margin-top: 0;
+    }
+
+    .details h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin: 1.2rem 0 0.4rem;
+    }
+
+    .details p,
+    .details li {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .details p {
+      margin-bottom: 0.6rem;
+    }
+
+    .details ul {
+      padding-left: 1.4rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .details li {
+      margin-bottom: 0.3rem;
+    }
+
+    .details ul ul {
+      margin-top: 0.3rem;
+    }
+
+    /* Technologien */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0 1.5rem;
+    }
+
+    .tech-item {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 1rem 1.1rem;
+      min-width: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .tech-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(61, 58, 54, 0.1);
+    }
+
+    .tech-icon {
+      flex-shrink: 0;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+    }
+
+    .tech-icon.html  { background: #fde8e2; color: #c0392b; }
+    .tech-icon.css   { background: #e0eaf9; color: #2980b9; }
+    .tech-icon.js    { background: #fef6d6; color: #d4a017; }
+    .tech-icon.three { background: #e6f7ef; color: #1a8a5c; }
+    .tech-icon.chart { background: #f0e7fb; color: #7c3aed; }
+    .tech-icon.api   { background: #e8f0fa; color: #3b6fa0; }
+    .tech-icon.kotlin { background: #f0e7fb; color: #7f4fd7; }
+    .tech-icon.compose { background: #e6f0fb; color: #2e6fb5; }
+    .tech-icon.room  { background: #fdf3e3; color: #c98a1b; }
+    .tech-icon.hilt  { background: #eef6f6; color: #1e8e8e; }
+    .tech-icon.work  { background: #fdeaea; color: #ce4a4a; }
+    .tech-icon.nav   { background: #e9f7ee; color: #2f9e63; }
+    .tech-icon.php   { background: #eceffc; color: #6574cd; }
+    .tech-icon.svg   { background: #fdeee4; color: #d9822b; }
+
+    .tech-info strong {
+      display: block;
+      font-size: 0.95rem;
+      line-height: 1.2;
+      overflow-wrap: anywhere;
+    }
+
+    .tech-info span {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 600px) {
+      .tech-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .tech-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Screenshot-Galerie */
+    .gallery {
+      margin-top: 2rem;
+    }
+
+    .gallery h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      background: var(--surface);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(61, 58, 54, 0.1);
+    }
+
+    .gallery-item a {
+      display: block;
+      text-decoration: none;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+    }
+
+    .gallery-item .caption {
+      padding: 0.6rem 0.8rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .gallery-item .caption a {
+      color: var(--accent);
+    }
+
+    .gallery-grid.flyer-grid {
+      grid-template-columns: minmax(300px, 520px);
+      justify-content: center;
+    }
+
+    .flyer-grid .gallery-item img {
+      aspect-ratio: auto;
+      object-fit: contain;
+      background: #fff;
+      max-height: 800px;
+      width: auto;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    .pdf-frame {
+      width: 100%;
+      height: 650px;
+      border: none;
+      background: #fff;
+      display: block;
+    }
+
+    /* Videogalerie */
+    .video-gallery {
+      margin-top: 2rem;
+    }
+
+    .video-gallery h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    .video-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .video-item video {
+      width: 100%;
+      display: block;
+      aspect-ratio: 9/16;
+      object-fit: cover;
+      background: #1e1c19;
+    }
+
+    .video-item .caption {
+      padding: 0.6rem 0.8rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    footer {
+      flex-shrink: 0;
+      text-align: center;
+      padding: 1.5rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    /* ── Mobile Sidebar ── */
+    @media (max-width: 768px) {
+      .hamburger {
+        display: block;
+      }
+
+      .sidebar {
+        transform: translateX(100%);
+        z-index: 30;
+        width: var(--sidebar-w);
+        box-shadow: -4px 0 20px rgba(0,0,0,0.08);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        top: 64px;
+        background: rgba(0,0,0,0.25);
+        z-index: 25;
+      }
+
+      .sidebar-overlay.open {
+        display: block;
+      }
+
+      main {
+        margin-right: 0;
+        width: 100%;
+        padding: 1.5rem 1rem 3rem;
+      }
+
+      footer {
+        margin-right: 0;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .video-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <a href="index.html"><h1>Portfolio</h1></a>
+      </div>
+      <nav aria-label="Navigation">
+        <ul>
+          <li><a href="index.html">Startseite</a></li>
+          <li><a href="projekte.html">Website &amp; App</a></li>
+          <li><a href="projekte.html">Flyer</a></li>
+          <li><a href="projekte.html">Grafiken &amp; Designs</a></li>
+          <li><a href="projekte.html">Kampagnen</a></li>
+          <li><a href="techstack.html">Tech Stack</a></li>
+        </ul>
+      </nav>
+      <button class="hamburger" id="menu-toggle" aria-label="Menü öffnen">&#9776;</button>
+    </div>
+  </header>
+
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <a href="index.html" class="sidebar-heading" style="text-transform:none;font-weight:600;color:var(--accent);letter-spacing:0;font-size:0.95rem;">
+      <span class="icon">&#8592;</span> Startseite
+    </a>
+    <a href="techstack.html" class="sidebar-heading" style="text-transform:none;font-weight:600;color:var(--accent);letter-spacing:0;font-size:0.95rem;">
+      <span class="icon">&#128241;</span> Tech Stack
+    </a>
+
+    <div class="sidebar-divider"></div>
+
+    <!-- Kategorie: Projekte -->
+    <div class="sidebar-section">
+      <button class="sidebar-heading open" data-target="nav-projekte">
+        <span class="icon">&#128193;</span> Website &amp; App
+        <span class="arrow">&#9654;</span>
+      </button>
+      <ul class="sidebar-links open" id="nav-projekte"></ul>
+    </div>
+
+    <!-- Kategorie: Flyer -->
+    <div class="sidebar-section">
+      <button class="sidebar-heading" data-target="nav-flyer">
+        <span class="icon">&#128424;</span> Flyer
+        <span class="arrow">&#9654;</span>
+      </button>
+      <ul class="sidebar-links" id="nav-flyer"></ul>
+    </div>
+
+    <!-- Kategorie: Grafiken & Designs (Platzhalter) -->
+    <div class="sidebar-section sidebar-placeholder">
+      <button class="sidebar-heading" data-target="nav-grafik">
+        <span class="icon">&#127912;</span> Grafiken &amp; Designs
+        <span class="arrow">&#9654;</span>
+      </button>
+      <ul class="sidebar-links" id="nav-grafik">
+        <li><a href="#">Bald verfügbar…</a></li>
+      </ul>
+    </div>
+
+    <!-- Kategorie: Kampagnen (Platzhalter) -->
+    <div class="sidebar-section sidebar-placeholder">
+      <button class="sidebar-heading" data-target="nav-kampagnen">
+        <span class="icon">&#128640;</span> Kampagnen
+        <span class="arrow">&#9654;</span>
+      </button>
+      <ul class="sidebar-links" id="nav-kampagnen">
+        <li><a href="#">Bald verfügbar…</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <div class="page-wrapper">
+    <main>
+      <section class="intro" id="intro">
+        <span class="category" id="intro-category"></span>
+        <h2 id="intro-title"></h2>
+        <p>
+          Wähle ein Projekt in der Navigation aus, um Details, Screenshots
+          und technische Informationen einzusehen.
+        </p>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    <p>Portfolio &copy; <span class="footer-year"></span> – Alle Projekte auf einen Blick.</p>
+  </footer>
+
+  <script>
+    const projects = [      {
+id: "projekt-1",
+        name: "Website – Dashboard Wirtschaftsdaten",
+        category: "Website",
+        date: "06/2025",
+        link: "https://liliagithub.github.io/InfoVisDashboard/",
+        note: "Diese Website wurde im Rahmen des Moduls „Information Visualization“ an der HTW Dresden im Studiengang Angewandte Informatik im 2. Semester vollständig von mir konzeptioniert understellt.",
+        tagline: "Webbasierte Anwendung zur Visualisierung makroökonomischer Indikatoren der Euro-Länder. Interaktiver 3D-Globus plus detailliertes Dashboard mit Live-Daten der EZB (Data API).",
+        cards: [
+          {
+            title: "Interaktiver 3D-Globus",
+            description: "Dreh- und zoombare 3D-Erde (Three.js) mit Länder-Highlighting, Daten-Popups und Umschalten zwischen Deutsch und Englisch.",
+            year: ""
+          },
+          {
+            title: "Wirtschafts-Dashboard",
+            description: "Diagramme für BIP-Wachstum, Inflation, EZB-Leitzins und Staatsanleihen mit Länder- und Indikatorvergleich (Chart.js).",
+            year: ""
+          },
+          {
+            title: "Echte EZB-Daten",
+            description: "Alle Wirtschaftsdaten werden dynamisch und in Echtzeit über die öffentliche Data API der Europäischen Zentralbank geladen.",
+            year: ""
+          }
+        ],
+        details: `
+          <h2>Projektbeschreibung</h2>
+          <p>
+            Dieses Projekt ist eine webbasierte Anwendung zur Visualisierung makroökonomischer Indikatoren von Euro-Ländern.
+            Es besteht aus zwei Hauptkomponenten:
+          </p>
+          <ul>
+            <li>Einem <strong>interaktiven 3D-Globus</strong>, der eine geografische Übersicht bietet und einen schnellen Einstieg zu den Daten einzelner Länder ermöglicht.</li>
+            <li>Einem <strong>detaillierten Dashboard</strong>, das eine tiefgehende Analyse und den Vergleich von Wirtschaftsdaten über Zeiträume und Länder hinweg erlaubt.</li>
+          </ul>
+          <p>
+            Alle angezeigten Wirtschaftsdaten werden dynamisch und in Echtzeit von der öffentlichen
+            <strong>Data API der Europäischen Zentralbank (EZB)</strong> abgerufen.
+          </p>
+
+          <h2>Verwendete Technologien</h2>
+          <div class="tech-grid">
+            <div class="tech-item">
+              <div class="tech-icon html">H5</div>
+              <div class="tech-info"><strong>HTML5</strong><span>Seitenstruktur &amp; Semantik</span></div>
+            </div>
+            <div class="tech-item">
+              <div class="tech-icon css">C3</div>
+              <div class="tech-info"><strong>CSS3</strong><span>Layout, Styling &amp; Responsive Design</span></div>
+            </div>
+            <div class="tech-item">
+              <div class="tech-icon js">JS</div>
+              <div class="tech-info"><strong>JavaScript (ES6+)</strong><span>Interaktivität &amp; Datenlogik</span></div>
+            </div>
+            <div class="tech-item">
+              <div class="tech-icon three">3D</div>
+              <div class="tech-info"><strong>Three.js</strong><span>3D-Visualisierung des Globus</span></div>
+            </div>
+            <div class="tech-item">
+              <div class="tech-icon chart">CH</div>
+              <div class="tech-info"><strong>Chart.js</strong><span>Diagramme &amp; Datenvisualisierung</span></div>
+            </div>
+            <div class="tech-item">
+              <div class="tech-icon api">API</div>
+              <div class="tech-info"><strong>ECB Data API</strong><span>Live-Abruf der EZB-Wirtschaftsdaten</span></div>
+            </div>
+          </div>
+
+          <h2>Features</h2>
+
+          <h3>Globus (index.html)</h3>
+          <ul>
+            <li><strong>Interaktive 3D-Erde:</strong> Mit der Maus dreh- und zoombar.</li>
+            <li><strong>Länder-Highlighting:</strong> Länder werden beim Überfahren mit der Maus hervorgehoben.</li>
+            <li><strong>Daten-Popup:</strong> Ein Klick auf ein Land mit verfügbaren EZB-Daten zeigt ein Popup mit den aktuellsten Schlüsselindikatoren (BIP-Wachstum, Inflation, etc.).</li>
+            <li><strong>Nahtlose Navigation:</strong> Ein Doppelklick auf ein Land oder ein Klick auf den "Zum Dashboard"-Button im Popup führt direkt zur Detailansicht dieses Landes im Dashboard.</li>
+            <li><strong>Steuerelemente:</strong> Globus-Rotation anhalten/starten, Ansicht zurücksetzen und Hervorhebungen entfernen.</li>
+            <li><strong>Zweisprachigkeit:</strong> Die Oberfläche kann live zwischen Deutsch und Englisch umgeschaltet werden.</li>
+          </ul>
+
+          <h3>Dashboard (dashboard.html)</h3>
+          <ul>
+            <li><strong>Detaillierte Einzeldiagramme:</strong> Visualisierung von BIP-Wachstum, Inflation, EZB-Leitzins und 10-jährigen Staatsanleihen für ein ausgewähltes Land.</li>
+            <li><strong>Dynamisches Vergleichsdiagramm:</strong> Bietet zwei Modi:
+              <ul>
+                <li><strong>Ländervergleich:</strong> Vergleichen Sie einen Indikator (z.B. Inflation) über mehrere Länder hinweg.</li>
+                <li><strong>Indikatorenvergleich:</strong> Vergleichen Sie mehrere Indikatoren für eine einzelne Region (z.B. BIP und Inflation für Deutschland).</li>
+              </ul>
+            </li>
+            <li><strong>Interaktive Steuerung:</strong>
+              <ul>
+                <li>Wahl des Zeitraums (letzte 5 bis 20 Jahre).</li>
+                <li>Freie Auswahl der zu vergleichenden Länder und Indikatoren.</li>
+                <li>Interaktive Diagramme mit Zoom- und Schwenk-Funktionalität.</li>
+                <li>Umschalten des Diagrammtyps zwischen Linien- und Balkendiagramm.</li>
+              </ul>
+            </li>
+          </ul>
+
+          <h2>Tipps &amp; Tricks zur Bedienung</h2>
+          <ul>
+            <li><strong>Präzises Zoomen im Dashboard:</strong> Um einen genauen Zeitraum in den Diagrammen zu analysieren, können Sie mit der Maus klicken und ein Rechteck über den gewünschten Bereich ziehen. Das Diagramm zoomt dann exakt auf diese Auswahl. Ein <strong>Doppelklick</strong> auf das Diagramm setzt den Zoom wieder zurück.</li>
+            <li><strong>Dashboard-Navigation:</strong> Ein <strong>Doppelklick</strong> auf ein Land auf dem Globus öffnet das Dashboard direkt mit dem Fokus auf dieses Land und zeigt einen Vergleich seiner wichtigsten Indikatoren.</li>
+            <li><strong>Sprache umschalten:</strong> Sowohl auf der Globus-Seite als auch im Dashboard kann die Anzeigesprache jederzeit live über den Button oben rechts zwischen Deutsch und Englisch gewechselt werden.</li>
+          </ul>
+        `,
+        gallery: [
+          { src: "img/projekt-1/Globusansicht.png", caption: "Globusansicht" },
+          { src: "img/projekt-1/Globusansicht_Deutschland.png", caption: "Globusansicht – Deutschland" },
+          { src: "img/projekt-1/Globusansicht_Polen.png", caption: "Globusansicht – Polen" },
+          { src: "img/projekt-1/Dashboard_Startansicht.png", caption: "Dashboard – Startansicht" },
+          { src: "img/projekt-1/Dashboard_Startansicht_2.png", caption: "Dashboard – Startansicht 2" },
+          { src: "img/projekt-1/Dashboard_Startansicht_3.png", caption: "Dashboard – Startansicht 3" },
+          { src: "img/projekt-1/Dashboard_Startansicht_4.png", caption: "Dashboard – Startansicht 4" },
+          { src: "img/projekt-1/Dashboard_Startansicht_5.png", caption: "Dashboard – Startansicht 5" },
+          { src: "img/projekt-1/Dashboard_Startansicht_6.png", caption: "Dashboard – Startansicht 6" },
+          { src: "img/projekt-1/Dashboard_4er_Ansicht.png", caption: "Dashboard – 4er-Ansicht" },
+          { src: "img/projekt-1/Dashboard_Zeitraum_einstellen.png", caption: "Dashboard – Zeitraum einstellen" },
+          { src: "img/projekt-1/Dashboard_Region_einstellen.png", caption: "Dashboard – Region einstellen" },
+          { src: "img/projekt-1/Dynamischer_Vergleich_Vollbild.png", caption: "Dynamischer Vergleich – Vollbild" }
+        ]
+      },
+      {
+        id: "projekt-2",
+        name: "Fridge Fun",
+        category: "App",
+        date: "06/2026",
+        tagline: "Android-App zur Verwaltung von Lebensmitteln und deren Haltbarkeit. Frische-Warnungen vor dem Ablauf, intelligente Einkaufsliste und Rezeptvorschläge.",
+        note: "Diese App wurde zusammen mit zwei Kommilitonen im Rahmen des Moduls „Mobile Netze“ im Studiengang Angewandte Informatik an der HTW Dresden entwickelt. Mein Aufgabengebiet umfasste die Erstellung des Designs und Umsetzungdes Frontends sowie die Scanner-Funktionalität.",
+        cards: [
+          {
+            title: "Smart Inventory",
+            description: "Lebensmittel mit Kategorien, Mengen und Haltbarkeitsdaten erfassen und verwalten.",
+            year: ""
+          },
+          {
+            title: "Zero-Waste-Alerts",
+            description: "Benachrichtigungen vor dem Ablaufdatum sowie automatische Vorschläge bei niedrigen Beständen.",
+            year: ""
+          },
+          {
+            title: "Rezept-Ideen",
+            description: "Essensvorschläge basierend auf den Zutaten, die bereits im Kühlschrank vorhanden sind.",
+            year: ""
+          }
+        ],
+        details: `
+          <h2>Projektbeschreibung</h2>
+          <p>
+            <strong>Fridge Fun</strong> ist eine Android-Anwendung, die Lebensmittelverschwendung reduzieren
+            und die Küchenverwaltung vereinfachen soll. Die App bietet folgende Kernfunktionen:
+          </p>
+          <ul>
+            <li><strong>Smart Inventory:</strong> Lebensmittel mit Kategorien, Mengen und Haltbarkeitsdaten erfassen und verwalten.</li>
+            <li><strong>Zero-Waste-Alerts:</strong> Termingerechte Benachrichtigungen vor dem Ablaufdatum, damit Lebensmittel rechtzeitig verbraucht werden.</li>
+            <li><strong>Intelligente Einkaufsliste:</strong> Automatische Vorschläge bei niedrigen Beständen, damit Grundnahrungsmittel nie fehlen.</li>
+            <li><strong>Rezeptinspiration:</strong> Essensideen basierend auf den vorhandenen Zutaten.</li>
+          </ul>
+          <p>
+            Alle Daten werden lokal gespeichert – die App funktioniert vollständig offline.
+          </p>
+
+          <h2>Verwendete Technologien</h2>
+          <div class="tech-grid">
+            <div class="tech-item">
+              <div class="tech-icon kotlin">Kt</div>
+              <div class="tech-info"><strong>Kotlin</strong><span>Primäre Programmiersprache</span></div>
+            </div>
+            <div class="tech-item">
+              <div class="tech-icon compose">JC</div>
+              <div class="tech-info"><strong>Jetpack Compose</strong><span>Deklarative UI-Entwicklung</span></div>
+            </div>
+            <div class="tech-item">
+              <div class="tech-icon room">RM</div>
+              <div class="tech-info"><strong>Room</strong><span>Lokale SQL-Datenbank</span></div>
+            </div>
+            <div class="tech-item">
+              <div class="tech-icon hilt">HI</div>
+              <div class="tech-info"><strong>Hilt (Dagger)</strong><span>Dependency Injection</span></div>
+            </div>
+            <div class="tech-item">
+              <div class="tech-icon work">WK</div>
+              <div class="tech-info"><strong>WorkManager</strong><span>Hintergrundaufgaben &amp; Erinnerungen</span></div>
+            </div>
+            <div class="tech-item">
+              <div class="tech-icon nav">NV</div>
+              <div class="tech-info"><strong>Navigation Compose</strong><span>Screens &amp; Navigation</span></div>
+            </div>
+          </div>
+
+          <h2>Architektur</h2>
+          <p>
+            Die App folgt den Prinzipien der <strong>Clean Architecture</strong> und dem
+            <strong>MVVM</strong>-Designmuster mit drei Schichten:
+          </p>
+          <ul>
+            <li><strong>Data Layer:</strong> Room-Datenbank, DAOs und Repository-Implementierungen.</li>
+            <li><strong>Domain Layer:</strong> Geschäftslogik mit Modellen und Repository-Schnittstellen.</li>
+            <li><strong>UI Layer (Presentation):</strong> Jetpack-Compose-Oberflächen mit ViewModels.</li>
+          </ul>
+        `,
+        gallery: [
+          { src: "img/projekt-2/fridge.png", caption: "Fridge Fun – App-Logo" }
+        ],
+        videos: [
+          { src: "vid/projekt-2/fridge.mp4", caption: "Kühlschrank-Verwaltung" },
+          { src: "vid/projekt-2/shopping.mp4", caption: "Einkaufsliste" },
+          { src: "vid/projekt-2/recipes.mp4", caption: "Rezeptvorschläge" }
+        ]
+      },
+      {
+        id: "projekt-3",
+        name: "Radebeuler Sinfoniker",
+        category: "Website",
+        date: "02/2026",
+        link: "https://radebeulersinfoniker.de/",
+        linkLabel: "Website besuchen",
+        tagline: "Offizielle Website der Radebeuler Sinfoniker – einem jungen Laienorchester aus Sachsen. Konzertkalender, Galerie, Impressionen und Kontaktmöglichkeiten auf einer Seite.",
+        note: "Diese Website habe ich selbstständig für das Orchester Radebeuler Sinfoniker konzeptioniert und erstellt. Sie ist live unter radebeulersinfoniker.de erreichbar.",
+        cards: [
+          {
+            title: "Konzertkalender",
+            description: "Alle kommenden Konzerte mit Datum, Ort und Details sowie Zugang zu Programmheften und Plakaten.",
+            year: ""
+          },
+          {
+            title: "Galerie & Impressionen",
+            description: "Bildergalerie vergangener Auftritte sowie Vorstellung des Orchesters und seiner Musiker.",
+            year: ""
+          },
+          {
+            title: "Eigenständig entwickelt",
+            description: "Komplett selbst erstellte responsive Website – von Struktur und Design bis hin zu Konzertkarten und Burger-Menü.",
+            year: ""
+          }
+        ],
+        details: `
+          <h2>Projektbeschreibung</h2>
+          <p>
+            Die <strong>Radebeuler Sinfoniker</strong> sind ein ambitioniertes Laienorchester, das mit einem
+            breiten Repertoire von der Klassik bis zur Moderne begeistert. Als zentrale Informationsplattform
+            präsentiert die Website das Orchester und bietet Besuchern alle wesentlichen Inhalte:
+          </p>
+          <ul>
+            <li><strong>Startseite</strong> mit Vorstellung, aktuellem Konzert und Aufruf zum Konzertkalender.</li>
+            <li><strong>Konzertkalender</strong> mit Terminen, Orten und Details zu kommenden Veranstaltungen.</li>
+            <li><strong>Galerie</strong> mit Fotos vergangener Konzerte.</li>
+            <li><strong>Kontakt, Impressum &amp; Datenschutz</strong> als weitere Unterseiten.</li>
+          </ul>
+          <p>
+            Die Website wurde von Grund auf eigenständig entwickelt und ist unter
+            <a href="https://radebeulersinfoniker.de/" target="_blank" rel="noopener">radebeulersinfoniker.de</a> live erreichbar.
+          </p>
+
+          <h2>Verwendete Technologien</h2>
+          <div class="tech-grid">
+            <div class="tech-item">
+              <div class="tech-icon html">H5</div>
+              <div class="tech-info"><strong>HTML5</strong><span>Struktur aller Unterseiten</span></div>
+            </div>
+            <div class="tech-item">
+              <div class="tech-icon css">C3</div>
+              <div class="tech-info"><strong>CSS3</strong><span>Individuelles Design &amp; Responsive Layout</span></div>
+            </div>
+            <div class="tech-item">
+              <div class="tech-icon js">JS</div>
+              <div class="tech-info"><strong>JavaScript</strong><span>Header/Footer-Loading &amp; Burger-Menü</span></div>
+            </div>
+            <div class="tech-item">
+              <div class="tech-icon svg">SVG</div>
+              <div class="tech-info"><strong>SVG-Logo</strong><span>Eigenes Orchester-Logo</span></div>
+            </div>
+          </div>
+
+          <h2>Besonderheiten</h2>
+          <ul>
+            <li><strong>Header &amp; Footer werden dynamisch geladen</strong> – Wartung der Navigation an einer Stelle.</li>
+            <li><strong>Burger-Menü</strong> für eine komfortable Navigation auf Smartphones.</li>
+            <li><strong>Responsive Design</strong> für mobile Endgeräte und Desktop.</li>
+            <li><strong>Konzertkarten</strong> mit Datum-Anzeige und direkter Verlinkung zu den Konzertdetails.</li>
+            <li><strong>SEO-Meta-Tags</strong> und Open-Graph-Informationen für gute Auffindbarkeit.</li>
+          </ul>
+        `,
+        gallery: [
+          { src: "img/projekt-3/Startseite.png", caption: "Startseite" },
+          { src: "img/projekt-3/Nächstes Konzert.png", caption: "Nächstes Konzert" },
+          { src: "img/projekt-3/Konzerttermine.png", caption: "Konzerttermine" },
+          { src: "img/projekt-3/Impressionen.png", caption: "Impressionen" }
+        ]
+      },
+      {
+        id: "flyer-1",
+        name: "Programmheft Radebeuler Sinfoniker",
+        category: "Programmheft",
+        date: "06/2026",
+        tagline: "Das Programmheft der Radebeuler Sinfoniker zum Konzert im Juni 2026. Inhalt und Gestaltung von mir erstellt.",
+        gallery: [
+          { src: "flyer/Programmheft_JUN2026.pdf", caption: "Programmheft Juni 2026" }
+        ]
+      },
+      {
+        id: "flyer-2",
+        name: "Poster Konzert Juni 2026",
+        category: "Poster",
+        date: "06/2026",
+        tagline: "Das Konzertposter der Radebeuler Sinfoniker für den Auftritt im Juni 2026. Inhalt und Gestaltung von mir erstellt.",
+        gallery: [
+          { src: "flyer/Poster_Konzert_Jun2026.png", caption: "Poster Konzert Juni 2026" }
+        ]
+      }
+    ];
+
+    const navProjekte = document.getElementById("nav-projekte");
+    const navFlyer = document.getElementById("nav-flyer");
+    const main = document.querySelector("main");
+
+    projects.forEach((project, index) => {
+      /* Sidebar-Link */
+      const li = document.createElement("li");
+      const link = document.createElement("a");
+      link.href = "#";
+      link.dataset.target = project.id;
+      link.textContent = project.name;
+      if (index === 0) link.classList.add("active");
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        switchProject(project.id);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+      li.appendChild(link);
+      if (project.id.indexOf("flyer-") === 0) {
+        navFlyer.appendChild(li);
+      } else {
+        navProjekte.appendChild(li);
+      }
+
+      /* Sektion */
+      const section = document.createElement("section");
+      section.id = project.id;
+      section.className = "project" + (index === 0 ? " active" : "");
+
+      if (project.date) {
+        const date = document.createElement("span");
+        date.className = "project-date";
+        date.textContent = project.date;
+        section.appendChild(date);
+      }
+
+      const tagline = document.createElement("div");
+      tagline.className = "tagline";
+      tagline.innerHTML = "<p>" + project.tagline + "</p>";
+      section.appendChild(tagline);
+
+      if (project.link) {
+        const demo = document.createElement("a");
+        demo.className = "demo-link";
+        demo.href = project.link;
+        demo.target = "_blank";
+        demo.rel = "noopener";
+        demo.textContent = project.linkLabel || "Live-Demo ansehen";
+        section.appendChild(demo);
+      }
+
+      if (project.note) {
+        const note = document.createElement("div");
+        note.className = "project-note";
+        note.textContent = project.note;
+        section.appendChild(note);
+      }
+
+      if (project.cards && project.cards.length > 0) {
+        const cardsContainer = document.createElement("div");
+        cardsContainer.className = "cards";
+        project.cards.forEach((card) => {
+          const div = document.createElement("div");
+          div.className = "card";
+          div.innerHTML =
+            "<h3>" + card.title + "</h3>" +
+            "<p>" + card.description + "</p>" +
+            (card.year ? '<span class="year">' + card.year + "</span>" : "");
+          cardsContainer.appendChild(div);
+        });
+        section.appendChild(cardsContainer);
+      }
+
+      if (project.gallery && project.gallery.length > 0) {
+        const isFlyer = project.id.indexOf("flyer-") === 0;
+        const gallery = document.createElement("div");
+        gallery.className = "gallery";
+        gallery.innerHTML = "<h2>" + (isFlyer ? "Vorschau" : "Screenshots") + "</h2>";
+        const grid = document.createElement("div");
+        grid.className = "gallery-grid" + (isFlyer ? " flyer-grid" : "");
+        project.gallery.forEach((item) => {
+          const fig = document.createElement("div");
+          fig.className = "gallery-item";
+          if (/\.pdf$/i.test(item.src)) {
+            fig.innerHTML =
+              '<iframe class="pdf-frame" src="' + item.src + '" title="' + item.caption + '"></iframe>' +
+              '<div class="caption"><a href="' + item.src + '" target="_blank" rel="noopener">' + item.caption + " &ndash; PDF &ouml;ffnen</a></div>";
+          } else {
+            fig.innerHTML =
+              '<a href="' + item.src + '" target="_blank" rel="noopener">' +
+                '<img src="' + item.src + '" alt="' + item.caption + '" loading="lazy">' +
+              "</a>" +
+              '<div class="caption">' + item.caption + "</div>";
+          }
+          grid.appendChild(fig);
+        });
+        gallery.appendChild(grid);
+        section.appendChild(gallery);
+      }
+
+      if (project.videos && project.videos.length > 0) {
+        const videoGallery = document.createElement("div");
+        videoGallery.className = "video-gallery";
+        videoGallery.innerHTML = "<h2>Videos</h2>";
+        const videoGrid = document.createElement("div");
+        videoGrid.className = "video-grid";
+        project.videos.forEach((item) => {
+          const videoItem = document.createElement("div");
+          videoItem.className = "video-item";
+          videoItem.innerHTML =
+            '<video controls preload="metadata" playsinline>' +
+              '<source src="' + item.src + '" type="video/mp4">' +
+              "Dein Browser unterstützt keine Videos." +
+            "</video>" +
+            '<div class="caption">' + item.caption + "</div>";
+          videoGrid.appendChild(videoItem);
+        });
+        videoGallery.appendChild(videoGrid);
+        section.appendChild(videoGallery);
+      }
+
+      if (project.details) {
+        const details = document.createElement("div");
+        details.className = "details";
+        details.innerHTML = project.details;
+        section.appendChild(details);
+      }
+
+      main.appendChild(section);
+    });
+
+    function switchProject(id) {
+      const current = projects.find((p) => p.id === id);
+      if (current) {
+        document.getElementById("intro-category").textContent = current.category || "";
+        document.getElementById("intro-title").textContent = current.name;
+      }
+      document.querySelectorAll("section.project").forEach((s) => {
+        s.classList.toggle("active", s.id === id);
+      });
+      document.querySelectorAll(".sidebar-links a[data-target]").forEach((a) => {
+        a.classList.toggle("active", a.dataset.target === id);
+      });
+      if (window.innerWidth <= 768) setSidebar(false);
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const target = params.get("projekt");
+    if (target) {
+      switchProject(target);
+    } else {
+      switchProject(projects[0].id);
+    }
+
+    /* Sidebar-Aufklappen */
+    document.querySelectorAll(".sidebar-heading[data-target]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const list = document.getElementById(btn.dataset.target);
+        btn.classList.toggle("open");
+        list.classList.toggle("open");
+      });
+    });
+
+    /* Mobile Sidebar / Einklappen */
+    const menuToggle = document.getElementById("menu-toggle");
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("sidebar-overlay");
+
+    function isMobile() {
+      return window.innerWidth <= 768;
+    }
+
+    function setSidebar(open) {
+      sidebar.classList.toggle("open", open);
+      document.body.classList.toggle("sb-collapsed", !open);
+      overlay.classList.toggle("open", open && isMobile());
+    }
+
+    menuToggle.addEventListener("click", () => {
+      setSidebar(!sidebar.classList.contains("open"));
+    });
+
+    overlay.addEventListener("click", () => setSidebar(false));
+
+    document.addEventListener("click", (e) => {
+      if (sidebar.classList.contains("open") &&
+          !sidebar.contains(e.target) &&
+          !menuToggle.contains(e.target)) {
+        setSidebar(false);
+      }
+    });
+
+    /* Öffnen/Aufklappen per Hover am rechten Rand */
+    const sidebarW = 250;
+    let hoverOpen = false;
+
+    document.addEventListener("mousemove", (e) => {
+      if (isMobile()) return;
+      const inSidebar = sidebar.contains(e.target);
+      const nearRight = (window.innerWidth - e.clientX) <= 40 || inSidebar;
+
+      if (nearRight && !sidebar.classList.contains("open")) {
+        hoverOpen = true;
+        setSidebar(true);
+      } else if (!nearRight && hoverOpen) {
+        hoverOpen = false;
+        setSidebar(false);
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (!isMobile()) {
+        setSidebar(true);
+      }
+    });
+
+    setSidebar(!isMobile());
+
+    document.querySelector(".footer-year").textContent = new Date().getFullYear();
+
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    window.scrollTo(0, 0);
+  </script>
+</body>
+</html>

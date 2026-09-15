@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio – Eine Sammlung meiner bisherigen Projekte.">
+  <title>Portfolio | Startseite</title>
+  <style>
+    :root {
+      --bg: #f7f5f2;
+      --surface: #ffffff;
+      --text: #3d3a36;
+      --muted: #8a857e;
+      --accent: #6b7f6f;
+      --accent-light: #e9efe9;
+      --border: #e4e0d9;
+      --shadow: 0 2px 10px rgba(61, 58, 54, 0.06);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      padding-top: 4.5rem;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .logo h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .logo a {
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      display: block;
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.95rem;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    nav a:hover {
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+
+    nav a.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    main {
+      flex: 1 0 auto;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+      width: 100%;
+    }
+
+    .hero {
+      padding: 2.5rem 2rem;
+      background: var(--accent-light);
+      border-radius: 14px;
+      margin-bottom: 2.5rem;
+      text-align: center;
+    }
+
+    .hero h2 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero p {
+      color: var(--text);
+      max-width: 60ch;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+    }
+
+    .home-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .home-card {
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      text-decoration: none;
+      color: var(--text);
+      box-shadow: var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .home-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(61, 58, 54, 0.12);
+    }
+
+    .home-card .thumb {
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    .home-card .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .home-card .placeholder-thumb {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        repeating-linear-gradient(45deg, var(--accent-light), var(--accent-light) 12px, var(--surface) 12px, var(--surface) 24px);
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .home-card .body {
+      padding: 1.25rem 1.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .home-card .body h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .home-card .body .category {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .home-card .body p {
+      color: var(--muted);
+      font-size: 0.93rem;
+      flex: 1;
+    }
+
+    .home-card .body .more {
+      margin-top: 1rem;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .date-pill {
+      display: inline-block;
+      align-self: flex-start;
+      margin-top: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--accent);
+      padding: 0.15rem 0.6rem;
+      background: var(--accent-light);
+      border-radius: 999px;
+    }
+
+    footer {
+      flex-shrink: 0;
+      text-align: center;
+      padding: 1.5rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    @media (max-width: 600px) {
+      .header-inner {
+        justify-content: center;
+        padding: 1rem;
+      }
+
+      .logo h1 {
+        font-size: 1.3rem;
+      }
+
+      nav ul {
+        justify-content: center;
+        gap: 0.3rem;
+      }
+
+      nav a {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.7rem;
+      }
+
+      main {
+        padding: 1.5rem 1rem 3rem;
+      }
+
+      .hero {
+        padding: 2rem 1.25rem;
+      }
+
+      .hero h2 {
+        font-size: 1.35rem;
+      }
+
+      .home-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <a href="index.html"><h1>Portfolio</h1></a>
+      </div>
+      <nav aria-label="Navigation">
+        <ul>
+          <li><a href="index.html" class="active">Startseite</a></li>
+          <li><a href="projekte.html">Website &amp; App</a></li>
+          <li><a href="projekte.html">Flyer</a></li>
+          <li><a href="projekte.html">Grafiken &amp; Designs</a></li>
+          <li><a href="projekte.html">Kampagnen</a></li>
+          <li><a href="techstack.html">Tech Stack</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h2>Meine Projekte</h2>
+      <p>
+        Eine Sammlung meiner bisherigen Arbeiten. Klicke auf eine Karte,
+        um das jeweilige Projekt zu entdecken.
+      </p>
+    </section>
+
+    <h2 class="section-title">Projektübersicht</h2>
+    <div class="home-cards" id="home-cards"></div>
+  </main>
+
+  <footer>
+    <p>Portfolio &copy; <span id="year"></span> – Alle Projekte auf einen Blick.</p>
+  </footer>
+
+  <script>
+    const projects = [
+      {
+        id: "projekt-1",
+        name: "Dashboard Wirtschaftsdaten",
+        category: "Website",
+        description: "Webbasierte Anwendung zur Visualisierung makroökonomischer Indikatoren der Euro-Länder – mit interaktivem 3D-Globus und Live-Daten der EZB.",
+        image: "img/projekt-1/Globusansicht.png",
+        date: "06/2025"
+      },
+      {
+        id: "projekt-2",
+        name: "Fridge Fun",
+        category: "App",
+        description: "Android-App zur Verwaltung von Lebensmitteln und Haltbarkeitsdaten mit Scanner-Funktion, Einkaufsliste und Rezeptvorschlägen. Entwickelt mit Kotlin und Jetpack Compose.",
+        image: "img/projekt-2/fridge.png",
+        date: "06/2026"
+      },
+      {
+        id: "projekt-3",
+        name: "Radebeuler Sinfoniker",
+        category: "Website",
+        description: "Selbstständig entwickelte Website des Orchesters mit Konzertkalender, Galerie und Kontakt – responsiv und live unter radebeulersinfoniker.de.",
+        image: "img/projekt-3/logo.png",
+        date: "02/2026"
+      }
+    ];
+
+    const container = document.getElementById("home-cards");
+
+    projects.forEach((project) => {
+      const card = document.createElement("a");
+      card.className = "home-card";
+      card.href = "projekte.html?projekt=" + project.id;
+
+      const thumb = project.image
+        ? '<img src="' + project.image + '" alt="' + project.name + '" loading="lazy">'
+        : "Noch keine Vorschau";
+      const thumbClass = project.image ? "thumb" : "thumb placeholder-thumb";
+
+      card.innerHTML =
+        '<div class="' + thumbClass + '">' + thumb + "</div>" +
+        '<div class="body">' +
+          '<span class="category">' + project.category + "</span>" +
+          "<h3>" + project.name + "</h3>" +
+          "<p>" + project.description + "</p>" +
+          (project.date ? '<span class="date-pill">' + project.date + "</span>" : "") +
+          '<span class="more">Zum Projekt &rarr;</span>' +
+        "</div>";
+
+      container.appendChild(card);
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    window.scrollTo(0, 0);
+  </script>
+</body>
+</html>

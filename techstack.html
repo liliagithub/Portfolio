@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio – Mein Technologie-Stack.">
+  <title>Portfolio | Tech Stack</title>
+  <style>
+    :root {
+      --bg: #f7f5f2;
+      --surface: #ffffff;
+      --text: #3d3a36;
+      --muted: #8a857e;
+      --accent: #6b7f6f;
+      --accent-light: #e9efe9;
+      --border: #e4e0d9;
+      --shadow: 0 2px 10px rgba(61, 58, 54, 0.06);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      padding-top: 4.5rem;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .logo h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .logo a {
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      display: block;
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.95rem;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    nav a:hover {
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+
+    nav a.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    main {
+      flex: 1 0 auto;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+      width: 100%;
+    }
+
+    .hero {
+      padding: 2.5rem 2rem;
+      background: var(--accent-light);
+      border-radius: 14px;
+      margin-bottom: 2.5rem;
+      text-align: center;
+    }
+
+    .hero h2 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero p {
+      color: var(--text);
+      max-width: 60ch;
+      margin: 0 auto;
+    }
+
+    .category-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .stack-section {
+      margin-bottom: 2.5rem;
+    }
+
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, max-content));
+      gap: 1rem;
+    }
+
+    .tech-item {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 1rem 1.1rem;
+      min-width: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .tech-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(61, 58, 54, 0.1);
+    }
+
+    .tech-icon {
+      flex-shrink: 0;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+    }
+
+    .tech-icon.html   { background: #fde8e2; color: #c0392b; }
+    .tech-icon.css    { background: #e0eaf9; color: #2980b9; }
+    .tech-icon.js     { background: #fef6d6; color: #d4a017; }
+    .tech-icon.three  { background: #e6f7ef; color: #1a8a5c; }
+    .tech-icon.chart  { background: #f0e7fb; color: #7c3aed; }
+    .tech-icon.svg    { background: #fdeee4; color: #d9822b; }
+    .tech-icon.api    { background: #e8f0fa; color: #3b6fa0; }
+    .tech-icon.data   { background: #e0eaf9; color: #1f7bb6; }
+    .tech-icon.sql    { background: #e6f0fb; color: #1f7bb6; }
+    .tech-icon.kotlin { background: #f0e7fb; color: #7f4fd7; }
+    .tech-icon.compose { background: #e6f0fb; color: #2e6fb5; }
+    .tech-icon.nav    { background: #e9f7ee; color: #2f9e63; }
+    .tech-icon.py     { background: #eaf6f0; color: #2f7f5f; }
+    .tech-icon.jv     { background: #fdeee4; color: #e08228; }
+    .tech-icon.cs     { background: #e2eafc; color: #6a3f9b; }
+    .tech-icon.cpp    { background: #e0eaf9; color: #316bd0; }
+    .tech-icon.stat   { background: #f0e7fb; color: #7c3aed; }
+    .tech-icon.market { background: #fdeee4; color: #c2410c; }
+    .tech-icon.uiux   { background: #e9f7ee; color: #2f9e63; }
+    .tech-icon.resp   { background: #e0eaf9; color: #2980b9; }
+    .tech-icon.proto  { background: #fdeee4; color: #d9822b; }
+    .tech-icon.info   { background: #eef6f6; color: #1e8e8e; }
+    .tech-icon.adobe  { background: #fdeaea; color: #d64541; }
+    .tech-icon.figma  { background: #f4eaf9; color: #a855f7; }
+    .tech-icon.jira   { background: #e8f0fa; color: #3b6fa0; }
+    .tech-icon.office { background: #fdeee4; color: #b45309; }
+    .tech-icon.git    { background: #fdeaea; color: #d64541; }
+    .tech-icon.node   { background: #e9f7ee; color: #2e7d32; }
+    .tech-icon.ide    { background: #e8f0fa; color: #3b6fa0; }
+    .tech-icon.pm     { background: #eef6f6; color: #1e8e8e; }
+    .tech-icon.sf     { background: #e6f7ef; color: #1a8a5c; }
+    .tech-icon.mk     { background: #f0e7fb; color: #7f4fd7; }
+
+    .tech-info strong {
+      display: block;
+      font-size: 0.95rem;
+      line-height: 1.2;
+      overflow-wrap: anywhere;
+    }
+
+    .tech-info span {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    footer {
+      flex-shrink: 0;
+      text-align: center;
+      padding: 1.5rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    @media (max-width: 600px) {
+      .tech-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 2rem 1.25rem;
+      }
+
+      .hero h2 {
+        font-size: 1.35rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <a href="index.html"><h1>Portfolio</h1></a>
+      </div>
+      <nav aria-label="Navigation">
+        <ul>
+          <li><a href="index.html">Startseite</a></li>
+          <li><a href="projekte.html">Website &amp; App</a></li>
+          <li><a href="projekte.html">Flyer</a></li>
+          <li><a href="projekte.html">Grafiken &amp; Designs</a></li>
+          <li><a href="projekte.html">Kampagnen</a></li>
+          <li><a href="techstack.html" class="active">Tech Stack</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h2>Mein Tech Stack</h2>
+      <p>
+        Die Technologien, mit denen ich meine Projekte umsetze –
+        von Web-Visualisierungen über Android-Apps bis zu Datenintegration.
+      </p>
+    </section>
+
+    <section class="stack-section">
+      <h3 class="category-title">Web-Entwicklung</h3>
+      <div class="tech-grid">
+        <div class="tech-item">
+          <div class="tech-icon html">H5</div>
+          <div class="tech-info"><strong>HTML5</strong><span>Seitenstruktur &amp; Semantik</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon css">C3</div>
+          <div class="tech-info"><strong>CSS3</strong><span>Layout, Styling &amp; Responsive Design</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon js">JS</div>
+          <div class="tech-info"><strong>JavaScript (ES6+)</strong><span>Interaktivität &amp; Datenlogik</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon svg">SVG</div>
+          <div class="tech-info"><strong>SVG</strong><span>Vektorgrafiken &amp; Logos</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon three">3D</div>
+          <div class="tech-info"><strong>Three.js</strong><span>3D-Visualisierung im Browser</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon chart">CH</div>
+          <div class="tech-info"><strong>Chart.js</strong><span>Diagramme &amp; Datenvisualisierung</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon resp">RG</div>
+          <div class="tech-info"><strong>Responsive Design</strong><span>Optimierung für alle Endgeräte</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stack-section">
+      <h3 class="category-title">Programmiersprachen</h3>
+      <div class="tech-grid">
+        <div class="tech-item">
+          <div class="tech-icon py">Py</div>
+          <div class="tech-info"><strong>Python</strong><span>Datensprache &amp; Skripte</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon jv">Ja</div>
+          <div class="tech-info"><strong>Java</strong><span>Objektorientierte Entwicklung</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon cs">C#</div>
+          <div class="tech-info"><strong>C#</strong><span>.NET-Entwicklung</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon cpp">C++</div>
+          <div class="tech-info"><strong>C++</strong><span>Systemnahe Programmierung</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon kotlin">Kt</div>
+          <div class="tech-info"><strong>Kotlin</strong><span>Primäre Android-Sprache</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stack-section">
+      <h3 class="category-title">Mobile &amp; Android</h3>
+      <div class="tech-grid">
+        <div class="tech-item">
+          <div class="tech-icon compose">JC</div>
+          <div class="tech-info"><strong>Jetpack Compose</strong><span>Deklarative UI-Entwicklung</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon nav">NV</div>
+          <div class="tech-info"><strong>Navigation Compose</strong><span>Screens &amp; Navigation</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stack-section">
+      <h3 class="category-title">Daten, Datenbanken &amp; APIs</h3>
+      <div class="tech-grid">
+        <div class="tech-item">
+          <div class="tech-icon api">API</div>
+          <div class="tech-info"><strong>ECB Data API</strong><span>Live-Abruf der EZB-Wirtschaftsdaten</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon api">JSON</div>
+          <div class="tech-info"><strong>JSON</strong><span>Datenaustausch &amp; APIs</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon data">CSV</div>
+          <div class="tech-info"><strong>CSV</strong><span>Tabellarische Datenverarbeitung</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon sql">SQL</div>
+          <div class="tech-info"><strong>SQL</strong><span>Grundlagen der Datenbankabfragen</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stack-section">
+      <h3 class="category-title">Datenanalyse</h3>
+      <div class="tech-grid">
+        <div class="tech-item">
+          <div class="tech-icon stat">ST</div>
+          <div class="tech-info"><strong>Statistische Auswertung</strong><span>Analyse &amp; Interpretation von Daten</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon market">MA</div>
+          <div class="tech-info"><strong>Markt- &amp; Nutzerdatenanalyse</strong><span>Zielgruppen- und Marktforschung</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stack-section">
+      <h3 class="category-title">Design &amp; UX</h3>
+      <div class="tech-grid">
+        <div class="tech-item">
+          <div class="tech-icon uiux">UX</div>
+          <div class="tech-info"><strong>UI/UX Design</strong><span>Benutzerfreundliche Oberflächen</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon proto">PT</div>
+          <div class="tech-info"><strong>Prototyping</strong><span>Klickbare Entwürfe &amp; Mockups</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon info">IS</div>
+          <div class="tech-info"><strong>Informationsstrukturierung</strong><span>Logische Inhaltsarchitektur</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon adobe">AD</div>
+          <div class="tech-info"><strong>Adobe Creative Suite</strong><span>Photoshop, Illustrator &amp; InDesign</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon figma">FG</div>
+          <div class="tech-info"><strong>Figma</strong><span>UI-Design &amp; Zusammenarbeit</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stack-section">
+      <h3 class="category-title">Tools &amp; Workflow</h3>
+      <div class="tech-grid">
+        <div class="tech-item">
+          <div class="tech-icon git">Git</div>
+          <div class="tech-info"><strong>Git</strong><span>Versionskontrolle</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon git">GH</div>
+          <div class="tech-info"><strong>GitHub</strong><span>Hosting &amp; Projektverwaltung</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon ide">VS</div>
+          <div class="tech-info"><strong>VS Code</strong><span>Web-Entwicklung</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon ide">AS</div>
+          <div class="tech-info"><strong>Android Studio</strong><span>App-Entwicklung</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon node">JS</div>
+          <div class="tech-info"><strong>Node.js</strong><span>Skripte &amp; Tooling</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon jira">Ji</div>
+          <div class="tech-info"><strong>Jira</strong><span>Aufgaben- &amp; Issue-Tracking</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon office">MO</div>
+          <div class="tech-info"><strong>MS Office</strong><span>Dokumente, Tabellen &amp; Präsentationen</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stack-section">
+      <h3 class="category-title">Projektmanagement</h3>
+      <div class="tech-grid">
+        <div class="tech-item">
+          <div class="tech-icon pm">PM</div>
+          <div class="tech-info"><strong>Projektmanagement</strong><span>Agil &amp; Wasserfall</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stack-section">
+      <h3 class="category-title">Marketing &amp; CRM</h3>
+      <div class="tech-grid">
+        <div class="tech-item">
+          <div class="tech-icon sf">SF</div>
+          <div class="tech-info"><strong>Salesforce</strong><span>CRM &amp; Kundendaten</span></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon mk">MK</div>
+          <div class="tech-info"><strong>Marketo</strong><span>Marketing Automation</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Portfolio &copy; <span id="year"></span> – Meine Technologien auf einen Blick.</p>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    window.scrollTo(0, 0);
+  </script>
+</body>
+</html>
